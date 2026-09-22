@@ -10,7 +10,7 @@
 
   <meta
     name="description"
-    content="QR Facile : créez gratuitement un QR Code pour un site web, WhatsApp, e-mail, téléphone, SMS, Wi-Fi ou texte."
+    content="QR Facile : créez gratuitement un QR Code pour un site web, WhatsApp, contact, e-mail, téléphone, SMS, Wi-Fi, localisation, événement ou texte."
   >
 
   <meta
@@ -113,7 +113,7 @@
     }
 
     .intro p {
-      max-width: 650px;
+      max-width: 700px;
       margin: auto;
 
       color: #66716b;
@@ -468,9 +468,10 @@
       </h1>
 
       <p>
-        Transformez un site web, un numéro de téléphone,
-        WhatsApp, un e-mail, un réseau Wi-Fi ou du texte
-        en QR Code en quelques secondes.
+        Transformez un site web, WhatsApp, un contact,
+        un e-mail, un numéro de téléphone, un SMS,
+        un réseau Wi-Fi, une localisation, un événement
+        ou du texte en QR Code en quelques secondes.
       </p>
 
     </section>
@@ -502,6 +503,10 @@
               💬 WhatsApp
             </option>
 
+            <option value="contact">
+              📇 Contact
+            </option>
+
             <option value="email">
               ✉️ E-mail
             </option>
@@ -516,6 +521,14 @@
 
             <option value="wifi">
               📶 Wi-Fi
+            </option>
+
+            <option value="location">
+              📍 Localisation
+            </option>
+
+            <option value="event">
+              📅 Événement
             </option>
 
             <option value="text">
@@ -692,7 +705,9 @@
       const selected = type.value;
 
 
-      /* SITE WEB */
+      /* =========================
+         SITE WEB
+      ========================= */
 
       if (selected === "url") {
 
@@ -722,7 +737,9 @@
       }
 
 
-      /* WHATSAPP */
+      /* =========================
+         WHATSAPP
+      ========================= */
 
       else if (selected === "whatsapp") {
 
@@ -767,7 +784,124 @@
       }
 
 
-      /* EMAIL */
+      /* =========================
+         CONTACT / VCARD
+      ========================= */
+
+      else if (selected === "contact") {
+
+        fields.innerHTML = `
+
+          <div class="field">
+
+            <label for="firstName">
+              Prénom
+            </label>
+
+            <input
+              id="firstName"
+              type="text"
+              placeholder="Jean"
+              autocomplete="given-name"
+            >
+
+          </div>
+
+
+          <div class="field">
+
+            <label for="lastName">
+              Nom
+            </label>
+
+            <input
+              id="lastName"
+              type="text"
+              placeholder="Dupont"
+              autocomplete="family-name"
+            >
+
+          </div>
+
+
+          <div class="field">
+
+            <label for="company">
+              Entreprise
+            </label>
+
+            <input
+              id="company"
+              type="text"
+              placeholder="Mon entreprise"
+              autocomplete="organization"
+            >
+
+          </div>
+
+
+          <div class="field">
+
+            <label for="contactPhone">
+              Téléphone
+            </label>
+
+            <input
+              id="contactPhone"
+              type="tel"
+              placeholder="+33612345678"
+              autocomplete="tel"
+            >
+
+          </div>
+
+
+          <div class="field">
+
+            <label for="contactEmail">
+              E-mail
+            </label>
+
+            <input
+              id="contactEmail"
+              type="email"
+              placeholder="contact@example.com"
+              autocomplete="email"
+            >
+
+          </div>
+
+
+          <div class="field">
+
+            <label for="contactWebsite">
+              Site web
+            </label>
+
+            <input
+              id="contactWebsite"
+              type="text"
+              placeholder="https://exemple.fr"
+              autocomplete="url"
+            >
+
+          </div>
+
+
+          <div class="help">
+            Le QR Code sera créé au format vCard.
+            Après le scan, le téléphone pourra proposer
+            d'ajouter le contact au carnet d'adresses.
+          </div>
+
+        `;
+
+      }
+
+
+      /* =========================
+         EMAIL
+      ========================= */
 
       else if (selected === "email") {
 
@@ -822,7 +956,9 @@
       }
 
 
-      /* TELEPHONE */
+      /* =========================
+         TELEPHONE
+      ========================= */
 
       else if (selected === "phone") {
 
@@ -848,7 +984,9 @@
       }
 
 
-      /* SMS */
+      /* =========================
+         SMS
+      ========================= */
 
       else if (selected === "sms") {
 
@@ -888,7 +1026,9 @@
       }
 
 
-      /* WIFI */
+      /* =========================
+         WIFI
+      ========================= */
 
       else if (selected === "wifi") {
 
@@ -955,7 +1095,132 @@
       }
 
 
-      /* TEXTE */
+      /* =========================
+         LOCALISATION
+      ========================= */
+
+      else if (selected === "location") {
+
+        fields.innerHTML = `
+
+          <div class="field">
+
+            <label for="location">
+              Adresse ou lieu
+            </label>
+
+            <input
+              id="location"
+              type="text"
+              placeholder="10 rue de la République, Strasbourg"
+              autocomplete="street-address"
+            >
+
+            <div class="help">
+              Le QR Code ouvrira cette localisation
+              dans une application de cartes.
+            </div>
+
+          </div>
+
+        `;
+
+      }
+
+
+      /* =========================
+         EVENEMENT
+      ========================= */
+
+      else if (selected === "event") {
+
+        fields.innerHTML = `
+
+          <div class="field">
+
+            <label for="eventTitle">
+              Titre de l'événement
+            </label>
+
+            <input
+              id="eventTitle"
+              type="text"
+              placeholder="Réunion"
+            >
+
+          </div>
+
+
+          <div class="field">
+
+            <label for="eventLocation">
+              Lieu
+            </label>
+
+            <input
+              id="eventLocation"
+              type="text"
+              placeholder="Strasbourg"
+            >
+
+          </div>
+
+
+          <div class="field">
+
+            <label for="eventDate">
+              Date
+            </label>
+
+            <input
+              id="eventDate"
+              type="date"
+            >
+
+          </div>
+
+
+          <div class="field">
+
+            <label for="eventTime">
+              Heure
+            </label>
+
+            <input
+              id="eventTime"
+              type="time"
+            >
+
+          </div>
+
+
+          <div class="field">
+
+            <label for="eventDescription">
+              Description
+            </label>
+
+            <textarea
+              id="eventDescription"
+              placeholder="Informations sur l'événement..."
+            ></textarea>
+
+          </div>
+
+
+          <div class="help">
+            Le QR Code utilise le format calendrier
+            compatible avec de nombreux téléphones.
+          </div>
+
+        `;
+
+      }
+
+
+      /* =========================
+         TEXTE
+      ========================= */
 
       else {
 
@@ -998,6 +1263,38 @@
 
 
     /* =========================================
+       ECHAPPEMENT VCARD
+    ========================================= */
+
+    function escapeVCard(value) {
+
+      return value
+        .replace(/\\/g, "\\\\")
+        .replace(/;/g, "\\;")
+        .replace(/,/g, "\\,")
+        .replace(/\n/g, "\\n");
+
+    }
+
+
+
+    /* =========================================
+       ECHAPPEMENT ICALENDAR
+    ========================================= */
+
+    function escapeICalendar(value) {
+
+      return value
+        .replace(/\\/g, "\\\\")
+        .replace(/;/g, "\\;")
+        .replace(/,/g, "\\,")
+        .replace(/\n/g, "\\n");
+
+    }
+
+
+
+    /* =========================================
        CONSTRUIRE LE CONTENU DU QR
     ========================================= */
 
@@ -1007,7 +1304,9 @@
         type.value;
 
 
-      /* SITE */
+      /* =========================
+         SITE
+      ========================= */
 
       if (selected === "url") {
 
@@ -1041,7 +1340,9 @@
 
 
 
-      /* WHATSAPP */
+      /* =========================
+         WHATSAPP
+      ========================= */
 
       if (selected === "whatsapp") {
 
@@ -1081,7 +1382,165 @@
 
 
 
-      /* EMAIL */
+      /* =========================
+         CONTACT / VCARD
+      ========================= */
+
+      if (selected === "contact") {
+
+        const firstName =
+          document
+            .getElementById("firstName")
+            .value
+            .trim();
+
+
+        const lastName =
+          document
+            .getElementById("lastName")
+            .value
+            .trim();
+
+
+        const company =
+          document
+            .getElementById("company")
+            .value
+            .trim();
+
+
+        const phone =
+          document
+            .getElementById("contactPhone")
+            .value
+            .trim();
+
+
+        const email =
+          document
+            .getElementById("contactEmail")
+            .value
+            .trim();
+
+
+        const website =
+          document
+            .getElementById("contactWebsite")
+            .value
+            .trim();
+
+
+        if (
+          !firstName &&
+          !lastName &&
+          !company &&
+          !phone &&
+          !email &&
+          !website
+        ) {
+
+          throw "Veuillez renseigner au moins une information de contact.";
+
+        }
+
+
+        let vcard = "";
+
+        vcard += "BEGIN:VCARD\n";
+        vcard += "VERSION:3.0\n";
+
+        vcard +=
+          "N:" +
+          escapeVCard(lastName) +
+          ";" +
+          escapeVCard(firstName) +
+          ";;;\n";
+
+
+        const fullName =
+          [firstName, lastName]
+            .filter(Boolean)
+            .join(" ");
+
+
+        if (fullName) {
+
+          vcard +=
+            "FN:" +
+            escapeVCard(fullName) +
+            "\n";
+
+        }
+
+
+        if (company) {
+
+          vcard +=
+            "ORG:" +
+            escapeVCard(company) +
+            "\n";
+
+        }
+
+
+        if (phone) {
+
+          vcard +=
+            "TEL;TYPE=CELL:" +
+            phone +
+            "\n";
+
+        }
+
+
+        if (email) {
+
+          vcard +=
+            "EMAIL:" +
+            email +
+            "\n";
+
+        }
+
+
+        if (website) {
+
+          let cleanWebsite =
+            website;
+
+
+          if (
+            !/^https?:\/\//i.test(cleanWebsite)
+          ) {
+
+            cleanWebsite =
+              "https://" +
+              cleanWebsite;
+
+          }
+
+
+          vcard +=
+            "URL:" +
+            escapeVCard(cleanWebsite) +
+            "\n";
+
+        }
+
+
+        vcard +=
+          "END:VCARD";
+
+
+        return vcard;
+
+      }
+
+
+
+      /* =========================
+         EMAIL
+      ========================= */
 
       if (selected === "email") {
 
@@ -1155,7 +1614,9 @@
 
 
 
-      /* TELEPHONE */
+      /* =========================
+         TELEPHONE
+      ========================= */
 
       if (selected === "phone") {
 
@@ -1182,7 +1643,9 @@
 
 
 
-      /* SMS */
+      /* =========================
+         SMS
+      ========================= */
 
       if (selected === "sms") {
 
@@ -1221,7 +1684,9 @@
 
 
 
-      /* WIFI */
+      /* =========================
+         WIFI
+      ========================= */
 
       if (selected === "wifi") {
 
@@ -1264,7 +1729,222 @@
 
 
 
-      /* TEXTE */
+      /* =========================
+         LOCALISATION
+      ========================= */
+
+      if (selected === "location") {
+
+        const location =
+          document
+            .getElementById("location")
+            .value
+            .trim();
+
+
+        if (!location) {
+
+          throw "Veuillez entrer une adresse ou un lieu.";
+
+        }
+
+
+        return (
+          "https://www.google.com/maps/search/?api=1&query=" +
+          encodeURIComponent(location)
+        );
+
+      }
+
+
+
+      /* =========================
+         EVENEMENT
+      ========================= */
+
+      if (selected === "event") {
+
+        const title =
+          document
+            .getElementById("eventTitle")
+            .value
+            .trim();
+
+
+        const location =
+          document
+            .getElementById("eventLocation")
+            .value
+            .trim();
+
+
+        const date =
+          document
+            .getElementById("eventDate")
+            .value;
+
+
+        const time =
+          document
+            .getElementById("eventTime")
+            .value;
+
+
+        const description =
+          document
+            .getElementById("eventDescription")
+            .value
+            .trim();
+
+
+        if (!title) {
+
+          throw "Veuillez entrer le titre de l'événement.";
+
+        }
+
+
+        if (!date) {
+
+          throw "Veuillez sélectionner une date.";
+
+        }
+
+
+        if (!time) {
+
+          throw "Veuillez sélectionner une heure.";
+
+        }
+
+
+        /*
+          Conversion de la date et de l'heure
+          vers le format iCalendar UTC.
+        */
+
+        const localDate =
+          new Date(
+            date +
+            "T" +
+            time
+          );
+
+
+        if (isNaN(localDate.getTime())) {
+
+          throw "La date ou l'heure est invalide.";
+
+        }
+
+
+        const year =
+          localDate
+            .getUTCFullYear();
+
+
+        const month =
+          String(
+            localDate.getUTCMonth() + 1
+          ).padStart(2, "0");
+
+
+        const day =
+          String(
+            localDate.getUTCDate()
+          ).padStart(2, "0");
+
+
+        const hours =
+          String(
+            localDate.getUTCHours()
+          ).padStart(2, "0");
+
+
+        const minutes =
+          String(
+            localDate.getUTCMinutes()
+          ).padStart(2, "0");
+
+
+        const seconds =
+          String(
+            localDate.getUTCSeconds()
+          ).padStart(2, "0");
+
+
+        const start =
+          year +
+          month +
+          day +
+          "T" +
+          hours +
+          minutes +
+          seconds +
+          "Z";
+
+
+        let eventData = "";
+
+        eventData +=
+          "BEGIN:VCALENDAR\n";
+
+        eventData +=
+          "VERSION:2.0\n";
+
+        eventData +=
+          "PRODID:-//QR Facile//FR\n";
+
+        eventData +=
+          "BEGIN:VEVENT\n";
+
+        eventData +=
+          "SUMMARY:" +
+          escapeICalendar(title) +
+          "\n";
+
+        eventData +=
+          "DTSTART:" +
+          start +
+          "\n";
+
+
+        if (location) {
+
+          eventData +=
+            "LOCATION:" +
+            escapeICalendar(location) +
+            "\n";
+
+        }
+
+
+        if (description) {
+
+          eventData +=
+            "DESCRIPTION:" +
+            escapeICalendar(description) +
+            "\n";
+
+        }
+
+
+        eventData +=
+          "END:VEVENT\n";
+
+        eventData +=
+          "END:VCALENDAR";
+
+
+        return eventData;
+
+      }
+
+
+
+      /* =========================
+         TEXTE
+      ========================= */
 
       const value =
         document
@@ -1329,8 +2009,8 @@
 
 
         /*
-          Affichage du lien de test
-          uniquement pour les sites.
+          Certains contenus sont directement
+          testables avec un lien.
         */
 
         if (
