@@ -1,0 +1,1594 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <meta
+    name="description"
+    content="QR Facile : créez gratuitement un QR Code pour un site web, WhatsApp, e-mail, téléphone, SMS, Wi-Fi ou texte."
+  >
+
+  <meta
+    name="theme-color"
+    content="#2f6b4f"
+  >
+
+  <title>QR Facile — Générateur de QR Code gratuit</title>
+
+  <style>
+
+    /* =========================
+       BASE
+    ========================= */
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      background: #f4f6f5;
+      color: #202823;
+    }
+
+    button,
+    input,
+    textarea,
+    select {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+
+    /* =========================
+       HEADER
+    ========================= */
+
+    header {
+      background: #ffffff;
+      border-bottom: 1px solid #e5e9e6;
+    }
+
+    .header-inner {
+      max-width: 1050px;
+      margin: auto;
+      padding: 18px 20px;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .logo {
+      color: #2f6b4f;
+      font-size: 22px;
+      font-weight: 800;
+      text-decoration: none;
+    }
+
+    .privacy {
+      font-size: 13px;
+      color: #68736d;
+    }
+
+
+    /* =========================
+       PAGE
+    ========================= */
+
+    main {
+      max-width: 1050px;
+      margin: auto;
+      padding: 40px 20px 60px;
+    }
+
+    .intro {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    .intro h1 {
+      margin: 0 0 10px;
+
+      font-size: clamp(30px, 5vw, 44px);
+      line-height: 1.1;
+    }
+
+    .intro p {
+      max-width: 650px;
+      margin: auto;
+
+      color: #66716b;
+      font-size: 17px;
+      line-height: 1.5;
+    }
+
+
+    /* =========================
+       APPLICATION
+    ========================= */
+
+    .app {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 22px;
+    }
+
+    .card {
+      background: #ffffff;
+      border-radius: 18px;
+      padding: 24px;
+
+      box-shadow:
+        0 8px 30px rgba(0, 0, 0, 0.06);
+    }
+
+
+    /* =========================
+       FORMULAIRE
+    ========================= */
+
+    .field {
+      margin-bottom: 18px;
+    }
+
+    label {
+      display: block;
+
+      margin-bottom: 8px;
+
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    input,
+    textarea,
+    select {
+      width: 100%;
+
+      padding: 13px 14px;
+
+      border: 1px solid #ccd5cf;
+      border-radius: 10px;
+
+      background: #ffffff;
+      color: #202823;
+
+      outline: none;
+
+      transition:
+        border-color 0.2s,
+        box-shadow 0.2s;
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+      border-color: #2f6b4f;
+
+      box-shadow:
+        0 0 0 3px rgba(47, 107, 79, 0.10);
+    }
+
+    textarea {
+      min-height: 110px;
+      resize: vertical;
+    }
+
+    .help {
+      margin-top: 6px;
+
+      font-size: 12px;
+      line-height: 1.4;
+
+      color: #7b8580;
+    }
+
+
+    /* =========================
+       BOUTON PRINCIPAL
+    ========================= */
+
+    .generate {
+      width: 100%;
+
+      padding: 14px 18px;
+
+      border: 0;
+      border-radius: 10px;
+
+      background: #2f6b4f;
+      color: #ffffff;
+
+      font-weight: 700;
+      font-size: 16px;
+
+      transition:
+        background 0.2s,
+        transform 0.1s;
+    }
+
+    .generate:hover {
+      background: #25583f;
+    }
+
+    .generate:active {
+      transform: scale(0.99);
+    }
+
+
+    /* =========================
+       QR
+    ========================= */
+
+    .qr-title {
+      margin: 0 0 15px;
+
+      font-size: 18px;
+    }
+
+    .qr-box {
+      min-height: 330px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      padding: 25px;
+
+      border: 2px dashed #d5ddd8;
+      border-radius: 14px;
+
+      background: #fafbfa;
+    }
+
+    .qr-placeholder {
+      max-width: 250px;
+
+      text-align: center;
+
+      color: #7b8580;
+      line-height: 1.5;
+    }
+
+    #qrcode {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #qrcode img,
+    #qrcode canvas {
+      max-width: 100%;
+      height: auto;
+
+      border-radius: 4px;
+    }
+
+
+    /* =========================
+       TEST LIEN
+    ========================= */
+
+    .test-link {
+      display: none;
+
+      margin-top: 14px;
+
+      text-align: center;
+
+      color: #2f6b4f;
+
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .test-link:hover {
+      text-decoration: underline;
+    }
+
+
+    /* =========================
+       ACTIONS
+    ========================= */
+
+    .actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+
+      gap: 10px;
+
+      margin-top: 16px;
+    }
+
+    .action-button {
+      padding: 12px;
+
+      border: 0;
+      border-radius: 10px;
+
+      background: #edf1ee;
+      color: #294838;
+
+      font-weight: 700;
+    }
+
+    .action-button:hover {
+      background: #e1e8e3;
+    }
+
+    .action-button:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+
+
+    /* =========================
+       INFO
+    ========================= */
+
+    .info {
+      margin-top: 22px;
+
+      padding: 14px 16px;
+
+      border-radius: 10px;
+
+      background: #f0f5f2;
+
+      color: #526159;
+
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+
+    /* =========================
+       FOOTER
+    ========================= */
+
+    footer {
+      max-width: 1050px;
+
+      margin: auto;
+
+      padding: 0 20px 30px;
+
+      text-align: center;
+
+      color: #89928d;
+
+      font-size: 13px;
+    }
+
+
+    /* =========================
+       MOBILE
+    ========================= */
+
+    @media (max-width: 750px) {
+
+      .header-inner {
+        padding: 15px;
+      }
+
+      .privacy {
+        display: none;
+      }
+
+      main {
+        padding:
+          30px
+          14px
+          45px;
+      }
+
+      .app {
+        grid-template-columns: 1fr;
+      }
+
+      .card {
+        padding: 20px;
+      }
+
+      .qr-box {
+        min-height: 290px;
+      }
+
+    }
+
+    @media (max-width: 400px) {
+
+      .actions {
+        grid-template-columns: 1fr;
+      }
+
+    }
+
+  </style>
+</head>
+
+
+<body>
+
+
+  <!-- =========================
+       HEADER
+  ========================= -->
+
+  <header>
+
+    <div class="header-inner">
+
+      <a
+        class="logo"
+        href="./"
+      >
+        QR Facile
+      </a>
+
+      <div class="privacy">
+        Gratuit · Sans compte · Vos données restent dans votre navigateur
+      </div>
+
+    </div>
+
+  </header>
+
+
+  <!-- =========================
+       CONTENU
+  ========================= -->
+
+  <main>
+
+
+    <section class="intro">
+
+      <h1>
+        Créez votre QR Code
+      </h1>
+
+      <p>
+        Transformez un site web, un numéro de téléphone,
+        WhatsApp, un e-mail, un réseau Wi-Fi ou du texte
+        en QR Code en quelques secondes.
+      </p>
+
+    </section>
+
+
+
+    <section class="app">
+
+
+      <!-- =====================
+           FORMULAIRE
+      ====================== -->
+
+      <div class="card">
+
+        <div class="field">
+
+          <label for="type">
+            Que voulez-vous mettre dans votre QR Code ?
+          </label>
+
+          <select id="type">
+
+            <option value="url">
+              🌐 Site web
+            </option>
+
+            <option value="whatsapp">
+              💬 WhatsApp
+            </option>
+
+            <option value="email">
+              ✉️ E-mail
+            </option>
+
+            <option value="phone">
+              📞 Téléphone
+            </option>
+
+            <option value="sms">
+              💬 SMS
+            </option>
+
+            <option value="wifi">
+              📶 Wi-Fi
+            </option>
+
+            <option value="text">
+              📝 Texte
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <!-- Champs dynamiques -->
+
+        <div id="fields"></div>
+
+
+        <button
+          id="generate"
+          class="generate"
+          type="button"
+        >
+          Générer mon QR Code
+        </button>
+
+
+        <div class="info">
+
+          💡 Le QR Code est généré directement
+          dans votre navigateur. Aucune information
+          saisie n'est envoyée à notre serveur.
+
+        </div>
+
+      </div>
+
+
+
+      <!-- =====================
+           RESULTAT
+      ====================== -->
+
+      <div class="card">
+
+        <h2 class="qr-title">
+          Votre QR Code
+        </h2>
+
+
+        <div class="qr-box">
+
+          <div id="qrcode">
+
+            <div class="qr-placeholder">
+
+              Votre QR Code apparaîtra ici.
+
+              <br><br>
+
+              Entrez une information puis cliquez
+              sur « Générer mon QR Code ».
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- Lien de test -->
+
+        <a
+          id="testLink"
+          class="test-link"
+          href="#"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Tester le lien ↗
+        </a>
+
+
+        <!-- Boutons -->
+
+        <div class="actions">
+
+          <button
+            id="downloadPng"
+            class="action-button"
+            type="button"
+            disabled
+          >
+            📥 Télécharger PNG
+          </button>
+
+          <button
+            id="copyLink"
+            class="action-button"
+            type="button"
+            disabled
+          >
+            📋 Copier le contenu
+          </button>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+
+  <!-- =========================
+       FOOTER
+  ========================= -->
+
+  <footer>
+
+    QR Facile · Générateur de QR Code gratuit
+
+  </footer>
+
+
+
+  <!-- =========================
+       BIBLIOTHÈQUE QR CODE
+       Chargée depuis CDN
+  ========================= -->
+
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"
+  ></script>
+
+
+
+  <script>
+
+    /* =========================================
+       ÉLÉMENTS
+    ========================================= */
+
+    const type =
+      document.getElementById("type");
+
+    const fields =
+      document.getElementById("fields");
+
+    const qrcode =
+      document.getElementById("qrcode");
+
+    const generate =
+      document.getElementById("generate");
+
+    const testLink =
+      document.getElementById("testLink");
+
+    const downloadPng =
+      document.getElementById("downloadPng");
+
+    const copyLink =
+      document.getElementById("copyLink");
+
+
+    let currentData = "";
+
+
+    /* =========================================
+       AFFICHER LES CHAMPS
+    ========================================= */
+
+    function renderFields() {
+
+      const selected = type.value;
+
+
+      /* SITE WEB */
+
+      if (selected === "url") {
+
+        fields.innerHTML = `
+
+          <div class="field">
+
+            <label for="value">
+              Adresse du site
+            </label>
+
+            <input
+              id="value"
+              type="text"
+              placeholder="https://renect.fr"
+              autocomplete="url"
+            >
+
+            <div class="help">
+              Exemple : https://renect.fr
+            </div>
+
+          </div>
+
+        `;
+
+      }
+
+
+      /* WHATSAPP */
+
+      else if (selected === "whatsapp") {
+
+        fields.innerHTML = `
+
+          <div class="field">
+
+            <label for="phone">
+              Numéro WhatsApp
+            </label>
+
+            <input
+              id="phone"
+              type="tel"
+              placeholder="33612345678"
+              autocomplete="tel"
+            >
+
+            <div class="help">
+              Utilisez le numéro au format international,
+              sans le « + » ni les espaces.
+            </div>
+
+          </div>
+
+
+          <div class="field">
+
+            <label for="message">
+              Message prérempli
+            </label>
+
+            <textarea
+              id="message"
+              placeholder="Bonjour, je vous contacte..."
+            ></textarea>
+
+          </div>
+
+        `;
+
+      }
+
+
+      /* EMAIL */
+
+      else if (selected === "email") {
+
+        fields.innerHTML = `
+
+          <div class="field">
+
+            <label for="email">
+              Adresse e-mail
+            </label>
+
+            <input
+              id="email"
+              type="email"
+              placeholder="contact@example.com"
+              autocomplete="email"
+            >
+
+          </div>
+
+
+          <div class="field">
+
+            <label for="subject">
+              Objet
+            </label>
+
+            <input
+              id="subject"
+              type="text"
+              placeholder="Demande d'information"
+            >
+
+          </div>
+
+
+          <div class="field">
+
+            <label for="body">
+              Message
+            </label>
+
+            <textarea
+              id="body"
+              placeholder="Bonjour..."
+            ></textarea>
+
+          </div>
+
+        `;
+
+      }
+
+
+      /* TELEPHONE */
+
+      else if (selected === "phone") {
+
+        fields.innerHTML = `
+
+          <div class="field">
+
+            <label for="value">
+              Numéro de téléphone
+            </label>
+
+            <input
+              id="value"
+              type="tel"
+              placeholder="+33612345678"
+              autocomplete="tel"
+            >
+
+          </div>
+
+        `;
+
+      }
+
+
+      /* SMS */
+
+      else if (selected === "sms") {
+
+        fields.innerHTML = `
+
+          <div class="field">
+
+            <label for="phone">
+              Numéro de téléphone
+            </label>
+
+            <input
+              id="phone"
+              type="tel"
+              placeholder="+33612345678"
+              autocomplete="tel"
+            >
+
+          </div>
+
+
+          <div class="field">
+
+            <label for="message">
+              Message
+            </label>
+
+            <textarea
+              id="message"
+              placeholder="Votre message..."
+            ></textarea>
+
+          </div>
+
+        `;
+
+      }
+
+
+      /* WIFI */
+
+      else if (selected === "wifi") {
+
+        fields.innerHTML = `
+
+          <div class="field">
+
+            <label for="ssid">
+              Nom du réseau Wi-Fi
+            </label>
+
+            <input
+              id="ssid"
+              type="text"
+              placeholder="MaBox"
+              autocomplete="off"
+            >
+
+          </div>
+
+
+          <div class="field">
+
+            <label for="password">
+              Mot de passe Wi-Fi
+            </label>
+
+            <input
+              id="password"
+              type="text"
+              placeholder="MotDePasse"
+              autocomplete="off"
+            >
+
+          </div>
+
+
+          <div class="field">
+
+            <label for="security">
+              Sécurité
+            </label>
+
+            <select id="security">
+
+              <option value="WPA">
+                WPA / WPA2 / WPA3
+              </option>
+
+              <option value="WEP">
+                WEP
+              </option>
+
+              <option value="nopass">
+                Aucun mot de passe
+              </option>
+
+            </select>
+
+          </div>
+
+        `;
+
+      }
+
+
+      /* TEXTE */
+
+      else {
+
+        fields.innerHTML = `
+
+          <div class="field">
+
+            <label for="value">
+              Votre texte
+            </label>
+
+            <textarea
+              id="value"
+              placeholder="Écrivez votre texte ici..."
+            ></textarea>
+
+          </div>
+
+        `;
+
+      }
+
+    }
+
+
+
+    /* =========================================
+       ECHAPPEMENT WIFI
+    ========================================= */
+
+    function escapeWifi(value) {
+
+      return value.replace(
+        /([\\;,":])/g,
+        "\\$1"
+      );
+
+    }
+
+
+
+    /* =========================================
+       CONSTRUIRE LE CONTENU DU QR
+    ========================================= */
+
+    function getData() {
+
+      const selected =
+        type.value;
+
+
+      /* SITE */
+
+      if (selected === "url") {
+
+        let value =
+          document
+            .getElementById("value")
+            .value
+            .trim();
+
+
+        if (!value) {
+
+          throw "Veuillez entrer une adresse web.";
+
+        }
+
+
+        if (
+          !/^https?:\/\//i.test(value)
+        ) {
+
+          value =
+            "https://" + value;
+
+        }
+
+
+        return value;
+
+      }
+
+
+
+      /* WHATSAPP */
+
+      if (selected === "whatsapp") {
+
+        const phone =
+          document
+            .getElementById("phone")
+            .value
+            .replace(/[^\d]/g, "");
+
+
+        const message =
+          document
+            .getElementById("message")
+            .value
+            .trim();
+
+
+        if (!phone) {
+
+          throw "Veuillez entrer un numéro WhatsApp.";
+
+        }
+
+
+        return (
+          "https://wa.me/" +
+          phone +
+          (
+            message
+              ? "?text=" +
+                encodeURIComponent(message)
+              : ""
+          )
+        );
+
+      }
+
+
+
+      /* EMAIL */
+
+      if (selected === "email") {
+
+        const email =
+          document
+            .getElementById("email")
+            .value
+            .trim();
+
+
+        const subject =
+          document
+            .getElementById("subject")
+            .value
+            .trim();
+
+
+        const body =
+          document
+            .getElementById("body")
+            .value
+            .trim();
+
+
+        if (!email) {
+
+          throw "Veuillez entrer une adresse e-mail.";
+
+        }
+
+
+        let result =
+          "mailto:" + email;
+
+
+        const params = [];
+
+
+        if (subject) {
+
+          params.push(
+            "subject=" +
+            encodeURIComponent(subject)
+          );
+
+        }
+
+
+        if (body) {
+
+          params.push(
+            "body=" +
+            encodeURIComponent(body)
+          );
+
+        }
+
+
+        if (params.length) {
+
+          result +=
+            "?" +
+            params.join("&");
+
+        }
+
+
+        return result;
+
+      }
+
+
+
+      /* TELEPHONE */
+
+      if (selected === "phone") {
+
+        const phone =
+          document
+            .getElementById("value")
+            .value
+            .trim();
+
+
+        if (!phone) {
+
+          throw "Veuillez entrer un numéro de téléphone.";
+
+        }
+
+
+        return (
+          "tel:" +
+          phone.replace(/[^\d+]/g, "")
+        );
+
+      }
+
+
+
+      /* SMS */
+
+      if (selected === "sms") {
+
+        const phone =
+          document
+            .getElementById("phone")
+            .value
+            .trim();
+
+
+        const message =
+          document
+            .getElementById("message")
+            .value
+            .trim();
+
+
+        if (!phone) {
+
+          throw "Veuillez entrer un numéro de téléphone.";
+
+        }
+
+
+        return (
+          "SMSTO:" +
+          phone +
+          (
+            message
+              ? ":" + message
+              : ""
+          )
+        );
+
+      }
+
+
+
+      /* WIFI */
+
+      if (selected === "wifi") {
+
+        const ssid =
+          document
+            .getElementById("ssid")
+            .value;
+
+
+        const password =
+          document
+            .getElementById("password")
+            .value;
+
+
+        const security =
+          document
+            .getElementById("security")
+            .value;
+
+
+        if (!ssid) {
+
+          throw "Veuillez entrer le nom du réseau Wi-Fi.";
+
+        }
+
+
+        return (
+          "WIFI:T:" +
+          security +
+          ";S:" +
+          escapeWifi(ssid) +
+          ";P:" +
+          escapeWifi(password) +
+          ";;"
+        );
+
+      }
+
+
+
+      /* TEXTE */
+
+      const value =
+        document
+          .getElementById("value")
+          .value
+          .trim();
+
+
+      if (!value) {
+
+        throw "Veuillez entrer un texte.";
+
+      }
+
+
+      return value;
+
+    }
+
+
+
+    /* =========================================
+       GENERER LE QR
+    ========================================= */
+
+    function generateQR() {
+
+      try {
+
+        currentData =
+          getData();
+
+
+        /*
+          On supprime l'ancien QR.
+        */
+
+        qrcode.innerHTML = "";
+
+
+        /*
+          Création du nouveau QR.
+        */
+
+        new QRCode(
+          qrcode,
+          {
+            text: currentData,
+
+            width: 260,
+
+            height: 260,
+
+            colorDark: "#000000",
+
+            colorLight: "#ffffff",
+
+            correctLevel:
+              QRCode.CorrectLevel.H
+          }
+        );
+
+
+        /*
+          Affichage du lien de test
+          uniquement pour les sites.
+        */
+
+        if (
+          /^https?:\/\//i.test(currentData)
+        ) {
+
+          testLink.href =
+            currentData;
+
+          testLink.style.display =
+            "block";
+
+        }
+
+        else {
+
+          testLink.style.display =
+            "none";
+
+        }
+
+
+        downloadPng.disabled =
+          false;
+
+        copyLink.disabled =
+          false;
+
+      }
+
+
+      catch (error) {
+
+        alert(error);
+
+      }
+
+    }
+
+
+
+    /* =========================================
+       TELECHARGER PNG
+    ========================================= */
+
+    function downloadQRCode() {
+
+      const canvas =
+        qrcode.querySelector("canvas");
+
+
+      const image =
+        qrcode.querySelector("img");
+
+
+      let url = null;
+
+
+      if (canvas) {
+
+        url =
+          canvas.toDataURL(
+            "image/png"
+          );
+
+      }
+
+
+      else if (image) {
+
+        url =
+          image.src;
+
+      }
+
+
+      if (!url) {
+
+        return;
+
+      }
+
+
+      const link =
+        document.createElement("a");
+
+
+      link.href =
+        url;
+
+
+      link.download =
+        "mon-qr-code.png";
+
+
+      document
+        .body
+        .appendChild(link);
+
+
+      link.click();
+
+
+      link.remove();
+
+    }
+
+
+
+    /* =========================================
+       COPIER LE CONTENU
+    ========================================= */
+
+    async function copyContent() {
+
+      if (!currentData) {
+
+        return;
+
+      }
+
+
+      try {
+
+        await navigator.clipboard.writeText(
+          currentData
+        );
+
+
+        const oldText =
+          copyLink.textContent;
+
+
+        copyLink.textContent =
+          "✓ Copié !";
+
+
+        setTimeout(
+          () => {
+
+            copyLink.textContent =
+              oldText;
+
+          },
+          1500
+        );
+
+      }
+
+
+      catch (error) {
+
+        /*
+          Solution de secours
+          pour certains navigateurs.
+        */
+
+        const textarea =
+          document.createElement("textarea");
+
+
+        textarea.value =
+          currentData;
+
+
+        document
+          .body
+          .appendChild(textarea);
+
+
+        textarea.select();
+
+
+        document.execCommand(
+          "copy"
+        );
+
+
+        textarea.remove();
+
+
+        copyLink.textContent =
+          "✓ Copié !";
+
+
+        setTimeout(
+          () => {
+
+            copyLink.textContent =
+              "📋 Copier le contenu";
+
+          },
+          1500
+        );
+
+      }
+
+    }
+
+
+
+    /* =========================================
+       EVENEMENTS
+    ========================================= */
+
+    type.addEventListener(
+      "change",
+      renderFields
+    );
+
+
+    generate.addEventListener(
+      "click",
+      generateQR
+    );
+
+
+    downloadPng.addEventListener(
+      "click",
+      downloadQRCode
+    );
+
+
+    copyLink.addEventListener(
+      "click",
+      copyContent
+    );
+
+
+    /*
+      Permet de générer avec Entrée
+      dans certains champs.
+    */
+
+    fields.addEventListener(
+      "keydown",
+      function(event) {
+
+        if (
+          event.key === "Enter" &&
+          event.target.tagName !== "TEXTAREA"
+        ) {
+
+          generateQR();
+
+        }
+
+      }
+    );
+
+
+    /* =========================================
+       INITIALISATION
+    ========================================= */
+
+    renderFields();
+
+  </script>
+
+</body>
+</html>
