@@ -285,7 +285,7 @@
 
 
     /* =========================
-       TEST LIEN
+       ACTION PRINCIPALE
     ========================= */
 
     .test-link {
@@ -597,7 +597,7 @@
         </div>
 
 
-        <!-- Lien de test -->
+        <!-- Action principale -->
 
         <a
           id="testLink"
@@ -606,7 +606,7 @@
           target="_blank"
           rel="noopener noreferrer"
         >
-          Tester le lien ↗
+          Ouvrir ↗
         </a>
 
 
@@ -623,13 +623,24 @@
             📥 Télécharger PNG
           </button>
 
+
           <button
             id="copyLink"
             class="action-button"
             type="button"
             disabled
           >
-            📋 Copier le contenu
+            📋 Copier
+          </button>
+
+
+          <button
+            id="shareButton"
+            class="action-button"
+            type="button"
+            disabled
+          >
+            📤 Partager
           </button>
 
         </div>
@@ -692,8 +703,12 @@
     const copyLink =
       document.getElementById("copyLink");
 
+    const shareButton =
+      document.getElementById("shareButton");
+
 
     let currentData = "";
+
 
 
     /* =========================================
@@ -1818,11 +1833,6 @@
         }
 
 
-        /*
-          Conversion de la date et de l'heure
-          vers le format iCalendar UTC.
-        */
-
         const localDate =
           new Date(
             date +
@@ -1967,6 +1977,712 @@
 
 
     /* =========================================
+       INFORMATIONS POUR LE PARTAGE
+    ========================================= */
+
+    function getShareInfo() {
+
+      const selected =
+        type.value;
+
+
+      /* =========================
+         SITE
+      ========================= */
+
+      if (selected === "url") {
+
+        return {
+          title: "QR Code - Site web",
+          text: currentData,
+          url: currentData
+        };
+
+      }
+
+
+      /* =========================
+         WHATSAPP
+      ========================= */
+
+      if (selected === "whatsapp") {
+
+        return {
+          title: "QR Code - WhatsApp",
+          text: currentData,
+          url: currentData
+        };
+
+      }
+
+
+      /* =========================
+         CONTACT
+      ========================= */
+
+      if (selected === "contact") {
+
+        const firstName =
+          document
+            .getElementById("firstName")
+            .value
+            .trim();
+
+
+        const lastName =
+          document
+            .getElementById("lastName")
+            .value
+            .trim();
+
+
+        const company =
+          document
+            .getElementById("company")
+            .value
+            .trim();
+
+
+        const phone =
+          document
+            .getElementById("contactPhone")
+            .value
+            .trim();
+
+
+        const email =
+          document
+            .getElementById("contactEmail")
+            .value
+            .trim();
+
+
+        const website =
+          document
+            .getElementById("contactWebsite")
+            .value
+            .trim();
+
+
+        const name =
+          [firstName, lastName]
+            .filter(Boolean)
+            .join(" ");
+
+
+        let text =
+          "Contact" +
+          (name ? " : " + name : "");
+
+
+        if (company) {
+          text += "\nEntreprise : " + company;
+        }
+
+        if (phone) {
+          text += "\nTéléphone : " + phone;
+        }
+
+        if (email) {
+          text += "\nE-mail : " + email;
+        }
+
+        if (website) {
+          text += "\nSite web : " + website;
+        }
+
+
+        return {
+          title: name
+            ? "Contact - " + name
+            : "Contact",
+          text: text
+        };
+
+      }
+
+
+      /* =========================
+         EMAIL
+      ========================= */
+
+      if (selected === "email") {
+
+        const email =
+          document
+            .getElementById("email")
+            .value
+            .trim();
+
+
+        const subject =
+          document
+            .getElementById("subject")
+            .value
+            .trim();
+
+
+        const body =
+          document
+            .getElementById("body")
+            .value
+            .trim();
+
+
+        let text =
+          "E-mail : " +
+          email;
+
+
+        if (subject) {
+          text +=
+            "\nObjet : " +
+            subject;
+        }
+
+
+        if (body) {
+          text +=
+            "\n\n" +
+            body;
+        }
+
+
+        return {
+          title: "QR Code - E-mail",
+          text: text,
+          url: currentData
+        };
+
+      }
+
+
+      /* =========================
+         TELEPHONE
+      ========================= */
+
+      if (selected === "phone") {
+
+        const phone =
+          document
+            .getElementById("value")
+            .value
+            .trim();
+
+
+        return {
+          title: "QR Code - Téléphone",
+          text: "Téléphone : " + phone
+        };
+
+      }
+
+
+      /* =========================
+         SMS
+      ========================= */
+
+      if (selected === "sms") {
+
+        const phone =
+          document
+            .getElementById("phone")
+            .value
+            .trim();
+
+
+        const message =
+          document
+            .getElementById("message")
+            .value
+            .trim();
+
+
+        let text =
+          "SMS vers : " +
+          phone;
+
+
+        if (message) {
+          text +=
+            "\n\n" +
+            message;
+        }
+
+
+        return {
+          title: "QR Code - SMS",
+          text: text
+        };
+
+      }
+
+
+      /* =========================
+         WIFI
+      ========================= */
+
+      if (selected === "wifi") {
+
+        const ssid =
+          document
+            .getElementById("ssid")
+            .value;
+
+
+        const password =
+          document
+            .getElementById("password")
+            .value;
+
+
+        const security =
+          document
+            .getElementById("security")
+            .value;
+
+
+        let text =
+          "Réseau Wi-Fi : " +
+          ssid +
+          "\nSécurité : " +
+          security;
+
+
+        if (password) {
+          text +=
+            "\nMot de passe : " +
+            password;
+        }
+
+
+        return {
+          title: "QR Code - Wi-Fi",
+          text: text
+        };
+
+      }
+
+
+      /* =========================
+         LOCALISATION
+      ========================= */
+
+      if (selected === "location") {
+
+        const location =
+          document
+            .getElementById("location")
+            .value
+            .trim();
+
+
+        return {
+          title: "QR Code - Localisation",
+          text: location,
+          url: currentData
+        };
+
+      }
+
+
+      /* =========================
+         EVENEMENT
+      ========================= */
+
+      if (selected === "event") {
+
+        const title =
+          document
+            .getElementById("eventTitle")
+            .value
+            .trim();
+
+
+        const location =
+          document
+            .getElementById("eventLocation")
+            .value
+            .trim();
+
+
+        const date =
+          document
+            .getElementById("eventDate")
+            .value;
+
+
+        const time =
+          document
+            .getElementById("eventTime")
+            .value;
+
+
+        const description =
+          document
+            .getElementById("eventDescription")
+            .value
+            .trim();
+
+
+        let text =
+          title;
+
+
+        if (date) {
+          text +=
+            "\nDate : " +
+            date;
+        }
+
+
+        if (time) {
+          text +=
+            "\nHeure : " +
+            time;
+        }
+
+
+        if (location) {
+          text +=
+            "\nLieu : " +
+            location;
+        }
+
+
+        if (description) {
+          text +=
+            "\n\n" +
+            description;
+        }
+
+
+        return {
+          title: "Événement - " + title,
+          text: text
+        };
+
+      }
+
+
+      /* =========================
+         TEXTE
+      ========================= */
+
+      return {
+        title: "QR Code - Texte",
+        text: currentData
+      };
+
+    }
+
+
+
+    /* =========================================
+       NOM DU FICHIER
+    ========================================= */
+
+    function getSafeFileName(name) {
+
+      return name
+        .replace(/[<>:"/\\|?*]/g, "")
+        .replace(/\s+/g, "-")
+        .substring(0, 80)
+        .trim();
+
+    }
+
+
+
+    /* =========================================
+       GENERER UN FICHIER VCARD
+    ========================================= */
+
+    function downloadVCard() {
+
+      const data =
+        currentData;
+
+
+      if (!data) {
+        return;
+      }
+
+
+      const blob =
+        new Blob(
+          [data],
+          {
+            type: "text/vcard;charset=utf-8"
+          }
+        );
+
+
+      const url =
+        URL.createObjectURL(blob);
+
+
+      const link =
+        document.createElement("a");
+
+
+      link.href =
+        url;
+
+
+      link.download =
+        "contact.vcf";
+
+
+      document
+        .body
+        .appendChild(link);
+
+
+      link.click();
+
+
+      link.remove();
+
+
+      URL.revokeObjectURL(url);
+
+    }
+
+
+
+    /* =========================================
+       GENERER UN FICHIER ICALENDAR
+    ========================================= */
+
+    function downloadCalendar() {
+
+      const data =
+        currentData;
+
+
+      if (!data) {
+        return;
+      }
+
+
+      const blob =
+        new Blob(
+          [data],
+          {
+            type: "text/calendar;charset=utf-8"
+          }
+        );
+
+
+      const url =
+        URL.createObjectURL(blob);
+
+
+      const link =
+        document.createElement("a");
+
+
+      link.href =
+        url;
+
+
+      link.download =
+        "evenement.ics";
+
+
+      document
+        .body
+        .appendChild(link);
+
+
+      link.click();
+
+
+      link.remove();
+
+
+      URL.revokeObjectURL(url);
+
+    }
+
+
+
+    /* =========================================
+       ACTION PRINCIPALE
+    ========================================= */
+
+    function updateMainAction() {
+
+      const selected =
+        type.value;
+
+
+      testLink.removeAttribute("href");
+
+
+      testLink.target =
+        "_blank";
+
+
+      testLink.onclick =
+        null;
+
+
+      testLink.style.display =
+        "block";
+
+
+      if (selected === "url") {
+
+        testLink.href =
+          currentData;
+
+        testLink.textContent =
+          "🌐 Ouvrir le site ↗";
+
+      }
+
+
+      else if (selected === "whatsapp") {
+
+        testLink.href =
+          currentData;
+
+        testLink.textContent =
+          "💬 Ouvrir WhatsApp ↗";
+
+      }
+
+
+      else if (selected === "email") {
+
+        testLink.href =
+          currentData;
+
+        testLink.textContent =
+          "✉️ Ouvrir l'e-mail ↗";
+
+      }
+
+
+      else if (selected === "phone") {
+
+        testLink.href =
+          currentData;
+
+        testLink.textContent =
+          "📞 Appeler";
+
+      }
+
+
+      else if (selected === "sms") {
+
+        testLink.href =
+          "sms:" +
+          document
+            .getElementById("phone")
+            .value
+            .trim();
+
+        testLink.textContent =
+          "💬 Ouvrir les SMS ↗";
+
+      }
+
+
+      else if (selected === "location") {
+
+        testLink.href =
+          currentData;
+
+        testLink.textContent =
+          "📍 Ouvrir dans Maps ↗";
+
+      }
+
+
+      else if (selected === "contact") {
+
+        testLink.removeAttribute("href");
+
+        testLink.textContent =
+          "📇 Télécharger le contact";
+
+        testLink.onclick =
+          function(event) {
+
+            event.preventDefault();
+
+            downloadVCard();
+
+          };
+
+      }
+
+
+      else if (selected === "event") {
+
+        testLink.removeAttribute("href");
+
+        testLink.textContent =
+          "📅 Télécharger l'événement";
+
+        testLink.onclick =
+          function(event) {
+
+            event.preventDefault();
+
+            downloadCalendar();
+
+          };
+
+      }
+
+
+      else if (selected === "wifi") {
+
+        testLink.removeAttribute("href");
+
+        testLink.textContent =
+          "📶 Copier les informations Wi-Fi";
+
+        testLink.onclick =
+          function(event) {
+
+            event.preventDefault();
+
+            copyContent();
+
+          };
+
+      }
+
+
+      else {
+
+        testLink.removeAttribute("href");
+
+        testLink.textContent =
+          "📝 Copier le texte";
+
+        testLink.onclick =
+          function(event) {
+
+            event.preventDefault();
+
+            copyContent();
+
+          };
+
+      }
+
+    }
+
+
+
+    /* =========================================
        GENERER LE QR
     ========================================= */
 
@@ -2009,34 +2725,23 @@
 
 
         /*
-          Certains contenus sont directement
-          testables avec un lien.
+          Mise à jour de l'action principale.
         */
 
-        if (
-          /^https?:\/\//i.test(currentData)
-        ) {
+        updateMainAction();
 
-          testLink.href =
-            currentData;
 
-          testLink.style.display =
-            "block";
-
-        }
-
-        else {
-
-          testLink.style.display =
-            "none";
-
-        }
-
+        /*
+          Activation des boutons.
+        */
 
         downloadPng.disabled =
           false;
 
         copyLink.disabled =
+          false;
+
+        shareButton.disabled =
           false;
 
       }
@@ -2200,10 +2905,128 @@
           () => {
 
             copyLink.textContent =
-              "📋 Copier le contenu";
+              "📋 Copier";
 
           },
           1500
+        );
+
+      }
+
+    }
+
+
+
+    /* =========================================
+       PARTAGER
+    ========================================= */
+
+    async function shareContent() {
+
+      if (!currentData) {
+
+        return;
+
+      }
+
+
+      const shareInfo =
+        getShareInfo();
+
+
+      /*
+        Si le navigateur supporte
+        le partage natif.
+      */
+
+      if (
+        navigator.share
+      ) {
+
+        try {
+
+          const shareData = {
+            title:
+              shareInfo.title,
+
+            text:
+              shareInfo.text
+          };
+
+
+          /*
+            On ajoute l'URL uniquement
+            lorsqu'il y en a une.
+          */
+
+          if (shareInfo.url) {
+
+            shareData.url =
+              shareInfo.url;
+
+          }
+
+
+          await navigator.share(
+            shareData
+          );
+
+
+          return;
+
+        }
+
+
+        catch (error) {
+
+          /*
+            L'utilisateur peut avoir
+            simplement fermé le menu
+            de partage.
+          */
+
+          if (
+            error &&
+            error.name === "AbortError"
+          ) {
+
+            return;
+
+          }
+
+        }
+
+      }
+
+
+      /*
+        Solution manuelle si le partage
+        natif n'est pas disponible.
+      */
+
+      try {
+
+        await navigator.clipboard.writeText(
+          shareInfo.text
+        );
+
+
+        alert(
+          "Le partage direct n'est pas disponible sur ce navigateur.\n\n" +
+          "Les informations ont été copiées. " +
+          "Vous pouvez maintenant les coller dans WhatsApp, " +
+          "Messages, e-mail ou une autre application."
+        );
+
+      }
+
+
+      catch (error) {
+
+        alert(
+          "Le partage direct n'est pas disponible.\n\n" +
+          "Utilisez le bouton « Copier » puis " +
+          "collez le contenu dans l'application de votre choix."
         );
 
       }
@@ -2218,7 +3041,20 @@
 
     type.addEventListener(
       "change",
-      renderFields
+      function() {
+
+        renderFields();
+
+
+        /*
+          On masque les anciennes actions
+          tant qu'un nouveau QR n'est pas généré.
+        */
+
+        testLink.style.display =
+          "none";
+
+      }
     );
 
 
@@ -2237,6 +3073,12 @@
     copyLink.addEventListener(
       "click",
       copyContent
+    );
+
+
+    shareButton.addEventListener(
+      "click",
+      shareContent
     );
 
 
