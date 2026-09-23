@@ -204,6 +204,17 @@
 
 
     /* =========================
+       DATE / HEURE EVENEMENT
+    ========================= */
+
+    .event-date-time {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+
+    /* =========================
        BOUTON PRINCIPAL
     ========================= */
 
@@ -270,6 +281,8 @@
     }
 
     #qrcode {
+      position: relative;
+
       display: flex;
       align-items: center;
       justify-content: center;
@@ -281,6 +294,45 @@
       height: auto;
 
       border-radius: 4px;
+    }
+
+
+    /* =========================
+       ICONE AU CENTRE DU QR
+    ========================= */
+
+    .qr-logo {
+      position: absolute;
+
+      top: 50%;
+      left: 50%;
+
+      transform: translate(-50%, -50%);
+
+      width: 54px;
+      height: 54px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      background: #ffffff;
+
+      border-radius: 14px;
+
+      box-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.12);
+
+      z-index: 2;
+
+      pointer-events: none;
+    }
+
+    .qr-logo svg {
+      width: 34px;
+      height: 34px;
+
+      display: block;
     }
 
 
@@ -418,6 +470,10 @@
     @media (max-width: 400px) {
 
       .actions {
+        grid-template-columns: 1fr;
+      }
+
+      .event-date-time {
         grid-template-columns: 1fr;
       }
 
@@ -708,6 +764,418 @@
 
 
     let currentData = "";
+
+
+
+    /* =========================================
+       ICONES DES QR CODES
+    ========================================= */
+
+    function getQrIcon(selectedType) {
+
+      /*
+        Les icônes sont intégrées directement
+        dans le fichier HTML.
+
+        Cela évite de dépendre d'une seconde
+        bibliothèque ou d'un autre serveur.
+      */
+
+
+      /* =========================
+         SITE WEB
+      ========================= */
+
+      if (selectedType === "url") {
+
+        return `
+          <svg
+            viewBox="0 0 48 48"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+          >
+            <circle
+              cx="24"
+              cy="24"
+              r="17"
+              fill="none"
+              stroke="#2f6b4f"
+              stroke-width="3"
+            />
+
+            <path
+              d="M7 24h34"
+              fill="none"
+              stroke="#2f6b4f"
+              stroke-width="3"
+              stroke-linecap="round"
+            />
+
+            <path
+              d="M24 7c5 5 7 10 7 17s-2 12-7 17"
+              fill="none"
+              stroke="#2f6b4f"
+              stroke-width="3"
+              stroke-linecap="round"
+            />
+
+            <path
+              d="M24 7c-5 5-7 10-7 17s2 12 7 17"
+              fill="none"
+              stroke="#2f6b4f"
+              stroke-width="3"
+              stroke-linecap="round"
+            />
+          </svg>
+        `;
+
+      }
+
+
+      /* =========================
+         WHATSAPP
+      ========================= */
+
+      if (selectedType === "whatsapp") {
+
+        return `
+          <svg
+            viewBox="0 0 48 48"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+          >
+            <circle
+              cx="24"
+              cy="22"
+              r="15"
+              fill="#25D366"
+            />
+
+            <path
+              d="M17 37l3-7"
+              fill="none"
+              stroke="#25D366"
+              stroke-width="4"
+              stroke-linecap="round"
+            />
+
+            <path
+              d="M18 18c.6-1 1.3-1.1 2.1-.3l2.1 2.2c.6.6.6 1.2.1 1.9l-1 1.3c1.1 2.1 2.8 3.7 5 4.8l1.2-1c.6-.5 1.2-.5 1.8.1l2 2c.8.8.6 1.5-.3 2.1-1.1.8-2.6 1.1-4.2.6-6.3-2-10.6-6.3-12.6-12.6-.5-1.6-.2-3.1.6-4.1z"
+              fill="#ffffff"
+            />
+          </svg>
+        `;
+
+      }
+
+
+      /* =========================
+         CONTACT
+      ========================= */
+
+      if (selectedType === "contact") {
+
+        return `
+          <svg
+            viewBox="0 0 48 48"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+          >
+            <circle
+              cx="24"
+              cy="16"
+              r="8"
+              fill="#2f6b4f"
+            />
+
+            <path
+              d="M9 39c1.8-8 7-12 15-12s13.2 4 15 12"
+              fill="#2f6b4f"
+            />
+          </svg>
+        `;
+
+      }
+
+
+      /* =========================
+         EMAIL
+      ========================= */
+
+      if (selectedType === "email") {
+
+        return `
+          <svg
+            viewBox="0 0 48 48"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+          >
+            <rect
+              x="6"
+              y="11"
+              width="36"
+              height="26"
+              rx="4"
+              fill="none"
+              stroke="#2f6b4f"
+              stroke-width="3"
+            />
+
+            <path
+              d="M8 14l16 13L40 14"
+              fill="none"
+              stroke="#2f6b4f"
+              stroke-width="3"
+              stroke-linejoin="round"
+            />
+          </svg>
+        `;
+
+      }
+
+
+      /* =========================
+         TELEPHONE
+      ========================= */
+
+      if (selectedType === "phone") {
+
+        return `
+          <svg
+            viewBox="0 0 48 48"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+          >
+            <path
+              d="M14 7l7 5-4 7c2 4 5 7 9 9l7-4 5 7c1 2 1 4-1 5-3 2-7 2-10 1-7-2-13-8-16-15-1-4-1-8 1-12 1-2 2-3 2-3z"
+              fill="#2f6b4f"
+            />
+          </svg>
+        `;
+
+      }
+
+
+      /* =========================
+         SMS
+      ========================= */
+
+      if (selectedType === "sms") {
+
+        return `
+          <svg
+            viewBox="0 0 48 48"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+          >
+            <path
+              d="M7 9h34v24H20l-9 8v-8H7z"
+              fill="#2f6b4f"
+            />
+
+            <path
+              d="M15 17h18M15 23h13"
+              stroke="#ffffff"
+              stroke-width="3"
+              stroke-linecap="round"
+            />
+          </svg>
+        `;
+
+      }
+
+
+      /* =========================
+         WIFI
+      ========================= */
+
+      if (selectedType === "wifi") {
+
+        return `
+          <svg
+            viewBox="0 0 48 48"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+          >
+            <path
+              d="M7 18c10-9 24-9 34 0"
+              fill="none"
+              stroke="#2f6b4f"
+              stroke-width="4"
+              stroke-linecap="round"
+            />
+
+            <path
+              d="M13 25c7-6 15-6 22 0"
+              fill="none"
+              stroke="#2f6b4f"
+              stroke-width="4"
+              stroke-linecap="round"
+            />
+
+            <path
+              d="M19 32c3-3 7-3 10 0"
+              fill="none"
+              stroke="#2f6b4f"
+              stroke-width="4"
+              stroke-linecap="round"
+            />
+
+            <circle
+              cx="24"
+              cy="38"
+              r="3"
+              fill="#2f6b4f"
+            />
+          </svg>
+        `;
+
+      }
+
+
+      /* =========================
+         LOCALISATION
+      ========================= */
+
+      if (selectedType === "location") {
+
+        return `
+          <svg
+            viewBox="0 0 48 48"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+          >
+            <path
+              d="M24 43S10 28 10 19a14 14 0 1 1 28 0c0 9-14 24-14 24z"
+              fill="#2f6b4f"
+            />
+
+            <circle
+              cx="24"
+              cy="19"
+              r="5"
+              fill="#ffffff"
+            />
+          </svg>
+        `;
+
+      }
+
+
+      /* =========================
+         EVENEMENT
+      ========================= */
+
+      if (selectedType === "event") {
+
+        return `
+          <svg
+            viewBox="0 0 48 48"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+          >
+            <rect
+              x="7"
+              y="10"
+              width="34"
+              height="31"
+              rx="4"
+              fill="none"
+              stroke="#2f6b4f"
+              stroke-width="3"
+            />
+
+            <path
+              d="M7 18h34"
+              stroke="#2f6b4f"
+              stroke-width="3"
+            />
+
+            <path
+              d="M16 6v8M32 6v8"
+              stroke="#2f6b4f"
+              stroke-width="3"
+              stroke-linecap="round"
+            />
+
+            <circle
+              cx="17"
+              cy="25"
+              r="2"
+              fill="#2f6b4f"
+            />
+
+            <circle
+              cx="24"
+              cy="25"
+              r="2"
+              fill="#2f6b4f"
+            />
+
+            <circle
+              cx="31"
+              cy="25"
+              r="2"
+              fill="#2f6b4f"
+            />
+
+            <circle
+              cx="17"
+              cy="33"
+              r="2"
+              fill="#2f6b4f"
+            />
+
+            <circle
+              cx="24"
+              cy="33"
+              r="2"
+              fill="#2f6b4f"
+            />
+
+            <circle
+              cx="31"
+              cy="33"
+              r="2"
+              fill="#2f6b4f"
+            />
+          </svg>
+        `;
+
+      }
+
+
+      /* =========================
+         TEXTE
+      ========================= */
+
+      return `
+        <svg
+          viewBox="0 0 48 48"
+          xmlns="http://www.w3.org/2000/svg"
+          aria-hidden="true"
+        >
+          <rect
+            x="9"
+            y="6"
+            width="30"
+            height="36"
+            rx="4"
+            fill="none"
+            stroke="#2f6b4f"
+            stroke-width="3"
+          />
+
+          <path
+            d="M16 17h16M16 24h16M16 31h11"
+            stroke="#2f6b4f"
+            stroke-width="3"
+            stroke-linecap="round"
+          />
+        </svg>
+      `;
+
+    }
 
 
 
@@ -1168,6 +1636,56 @@
 
           <div class="field">
 
+            <label>
+              Début
+            </label>
+
+            <div class="event-date-time">
+
+              <input
+                id="eventStartDate"
+                type="date"
+                aria-label="Date de début"
+              >
+
+              <input
+                id="eventStartTime"
+                type="time"
+                aria-label="Heure de début"
+              >
+
+            </div>
+
+          </div>
+
+
+          <div class="field">
+
+            <label>
+              Fin
+            </label>
+
+            <div class="event-date-time">
+
+              <input
+                id="eventEndDate"
+                type="date"
+                aria-label="Date de fin"
+              >
+
+              <input
+                id="eventEndTime"
+                type="time"
+                aria-label="Heure de fin"
+              >
+
+            </div>
+
+          </div>
+
+
+          <div class="field">
+
             <label for="eventLocation">
               Lieu
             </label>
@@ -1176,34 +1694,6 @@
               id="eventLocation"
               type="text"
               placeholder="Strasbourg"
-            >
-
-          </div>
-
-
-          <div class="field">
-
-            <label for="eventDate">
-              Date
-            </label>
-
-            <input
-              id="eventDate"
-              type="date"
-            >
-
-          </div>
-
-
-          <div class="field">
-
-            <label for="eventTime">
-              Heure
-            </label>
-
-            <input
-              id="eventTime"
-              type="time"
             >
 
           </div>
@@ -1786,23 +2276,35 @@
             .trim();
 
 
+        const startDate =
+          document
+            .getElementById("eventStartDate")
+            .value;
+
+
+        const startTime =
+          document
+            .getElementById("eventStartTime")
+            .value;
+
+
+        const endDate =
+          document
+            .getElementById("eventEndDate")
+            .value;
+
+
+        const endTime =
+          document
+            .getElementById("eventEndTime")
+            .value;
+
+
         const location =
           document
             .getElementById("eventLocation")
             .value
             .trim();
-
-
-        const date =
-          document
-            .getElementById("eventDate")
-            .value;
-
-
-        const time =
-          document
-            .getElementById("eventTime")
-            .value;
 
 
         const description =
@@ -1819,104 +2321,106 @@
         }
 
 
-        if (!date) {
+        if (!startDate || !startTime) {
 
-          throw "Veuillez sélectionner une date.";
-
-        }
-
-
-        if (!time) {
-
-          throw "Veuillez sélectionner une heure.";
+          throw "Veuillez sélectionner la date et l'heure de début.";
 
         }
 
 
-        const localDate =
+        if (!endDate || !endTime) {
+
+          throw "Veuillez sélectionner la date et l'heure de fin.";
+
+        }
+
+
+        const start =
           new Date(
-            date +
+            startDate +
             "T" +
-            time
+            startTime
           );
 
 
-        if (isNaN(localDate.getTime())) {
+        const end =
+          new Date(
+            endDate +
+            "T" +
+            endTime
+          );
+
+
+        if (
+          isNaN(start.getTime()) ||
+          isNaN(end.getTime())
+        ) {
 
           throw "La date ou l'heure est invalide.";
 
         }
 
 
-        const year =
-          localDate
-            .getUTCFullYear();
+        if (end <= start) {
+
+          throw "La date et l'heure de fin doivent être après le début.";
+
+        }
 
 
-        const month =
-          String(
-            localDate.getUTCMonth() + 1
-          ).padStart(2, "0");
+        /*
+          Format local avec fuseau Europe/Paris.
 
+          On conserve l'heure saisie par l'utilisateur
+          comme heure locale française.
+        */
 
-        const day =
-          String(
-            localDate.getUTCDate()
-          ).padStart(2, "0");
+        function formatDateTime(date, time) {
 
+          return (
+            date.replace(/-/g, "") +
+            "T" +
+            time.replace(/:/g, "") +
+            "00"
+          );
 
-        const hours =
-          String(
-            localDate.getUTCHours()
-          ).padStart(2, "0");
-
-
-        const minutes =
-          String(
-            localDate.getUTCMinutes()
-          ).padStart(2, "0");
-
-
-        const seconds =
-          String(
-            localDate.getUTCSeconds()
-          ).padStart(2, "0");
-
-
-        const start =
-          year +
-          month +
-          day +
-          "T" +
-          hours +
-          minutes +
-          seconds +
-          "Z";
+        }
 
 
         let eventData = "";
 
         eventData +=
-          "BEGIN:VCALENDAR\n";
+          "BEGIN:VCALENDAR\r\n";
 
         eventData +=
-          "VERSION:2.0\n";
+          "VERSION:2.0\r\n";
 
         eventData +=
-          "PRODID:-//QR Facile//FR\n";
+          "PRODID:-//QR Facile//FR\r\n";
 
         eventData +=
-          "BEGIN:VEVENT\n";
+          "BEGIN:VEVENT\r\n";
 
         eventData +=
           "SUMMARY:" +
           escapeICalendar(title) +
-          "\n";
+          "\r\n";
 
         eventData +=
-          "DTSTART:" +
-          start +
-          "\n";
+          "DTSTART;TZID=Europe/Paris:" +
+          formatDateTime(
+            startDate,
+            startTime
+          ) +
+          "\r\n";
+
+        eventData +=
+          "DTEND;TZID=Europe/Paris:" +
+          formatDateTime(
+            endDate,
+            endTime
+          ) +
+          "\r\n";
 
 
         if (location) {
@@ -1924,7 +2428,7 @@
           eventData +=
             "LOCATION:" +
             escapeICalendar(location) +
-            "\n";
+            "\r\n";
 
         }
 
@@ -1934,13 +2438,13 @@
           eventData +=
             "DESCRIPTION:" +
             escapeICalendar(description) +
-            "\n";
+            "\r\n";
 
         }
 
 
         eventData +=
-          "END:VEVENT\n";
+          "END:VEVENT\r\n";
 
         eventData +=
           "END:VCALENDAR";
@@ -2306,15 +2810,27 @@
             .trim();
 
 
-        const date =
+        const startDate =
           document
-            .getElementById("eventDate")
+            .getElementById("eventStartDate")
             .value;
 
 
-        const time =
+        const startTime =
           document
-            .getElementById("eventTime")
+            .getElementById("eventStartTime")
+            .value;
+
+
+        const endDate =
+          document
+            .getElementById("eventEndDate")
+            .value;
+
+
+        const endTime =
+          document
+            .getElementById("eventEndTime")
             .value;
 
 
@@ -2329,31 +2845,55 @@
           title;
 
 
-        if (date) {
+        if (startDate) {
+
           text +=
-            "\nDate : " +
-            date;
+            "\nDébut : " +
+            startDate;
+
+          if (startTime) {
+
+            text +=
+              " à " +
+              startTime;
+
+          }
+
         }
 
 
-        if (time) {
+        if (endDate) {
+
           text +=
-            "\nHeure : " +
-            time;
+            "\nFin : " +
+            endDate;
+
+          if (endTime) {
+
+            text +=
+              " à " +
+              endTime;
+
+          }
+
         }
 
 
         if (location) {
+
           text +=
             "\nLieu : " +
             location;
+
         }
 
 
         if (description) {
+
           text +=
             "\n\n" +
             description;
+
         }
 
 
@@ -2725,6 +3265,26 @@
 
 
         /*
+          Ajout de l'icône correspondant
+          au type de QR.
+        */
+
+        const logo =
+          document.createElement("div");
+
+
+        logo.className =
+          "qr-logo";
+
+
+        logo.innerHTML =
+          getQrIcon(type.value);
+
+
+        qrcode.appendChild(logo);
+
+
+        /*
           Mise à jour de l'action principale.
         */
 
@@ -2758,10 +3318,72 @@
 
 
     /* =========================================
-       TELECHARGER PNG
+       CONVERTIR SVG EN IMAGE
+       POUR LE PNG
     ========================================= */
 
-    function downloadQRCode() {
+    function svgToImage(svgString) {
+
+      return new Promise(
+        function(resolve, reject) {
+
+          const blob =
+            new Blob(
+              [svgString],
+              {
+                type: "image/svg+xml;charset=utf-8"
+              }
+            );
+
+
+          const url =
+            URL.createObjectURL(blob);
+
+
+          const image =
+            new Image();
+
+
+          image.onload =
+            function() {
+
+              URL.revokeObjectURL(url);
+
+              resolve(image);
+
+            };
+
+
+          image.onerror =
+            function() {
+
+              URL.revokeObjectURL(url);
+
+              reject(
+                new Error(
+                  "Impossible de charger l'icône."
+                )
+              );
+
+            };
+
+
+          image.src =
+            url;
+
+        }
+      );
+
+    }
+
+
+
+    /* =========================================
+       TELECHARGER PNG
+       AVEC ICONE CENTRALE
+    ========================================= */
+
+    async function downloadQRCode() {
 
       const canvas =
         qrcode.querySelector("canvas");
@@ -2771,32 +3393,259 @@
         qrcode.querySelector("img");
 
 
-      let url = null;
-
-
-      if (canvas) {
-
-        url =
-          canvas.toDataURL(
-            "image/png"
-          );
-
-      }
-
-
-      else if (image) {
-
-        url =
-          image.src;
-
-      }
-
-
-      if (!url) {
+      if (!canvas && !image) {
 
         return;
 
       }
+
+
+      /*
+        Taille finale du fichier PNG.
+        Le QR reste identique visuellement,
+        mais le fichier téléchargé est plus net.
+      */
+
+      const finalSize =
+        520;
+
+
+      const output =
+        document.createElement("canvas");
+
+
+      output.width =
+        finalSize;
+
+
+      output.height =
+        finalSize;
+
+
+      const context =
+        output.getContext("2d");
+
+
+      /*
+        Fond blanc.
+      */
+
+      context.fillStyle =
+        "#ffffff";
+
+
+      context.fillRect(
+        0,
+        0,
+        finalSize,
+        finalSize
+      );
+
+
+      /*
+        Source du QR.
+      */
+
+      const qrSource =
+        canvas || image;
+
+
+      /*
+        Le QR est placé avec une petite marge.
+      */
+
+      const margin =
+        20;
+
+
+      const qrSize =
+        finalSize -
+        margin * 2;
+
+
+      context.imageSmoothingEnabled =
+        false;
+
+
+      context.drawImage(
+        qrSource,
+        margin,
+        margin,
+        qrSize,
+        qrSize
+      );
+
+
+      /*
+        Préparation de l'icône.
+      */
+
+      const iconSvg =
+        getQrIcon(type.value);
+
+
+      try {
+
+        const iconImage =
+          await svgToImage(iconSvg);
+
+
+        /*
+          Taille du badge central.
+        */
+
+        const badgeSize =
+          92;
+
+
+        const badgeX =
+          (finalSize - badgeSize) / 2;
+
+
+        const badgeY =
+          (finalSize - badgeSize) / 2;
+
+
+        /*
+          Fond blanc derrière l'icône.
+        */
+
+        context.fillStyle =
+          "#ffffff";
+
+
+        context.beginPath();
+
+
+        const radius =
+          22;
+
+
+        context.moveTo(
+          badgeX + radius,
+          badgeY
+        );
+
+
+        context.lineTo(
+          badgeX + badgeSize - radius,
+          badgeY
+        );
+
+
+        context.quadraticCurveTo(
+          badgeX + badgeSize,
+          badgeY,
+          badgeX + badgeSize,
+          badgeY + radius
+        );
+
+
+        context.lineTo(
+          badgeX + badgeSize,
+          badgeY + badgeSize - radius
+        );
+
+
+        context.quadraticCurveTo(
+          badgeX + badgeSize,
+          badgeY + badgeSize,
+          badgeX + badgeSize - radius,
+          badgeY + badgeSize
+        );
+
+
+        context.lineTo(
+          badgeX + radius,
+          badgeY + badgeSize
+        );
+
+
+        context.quadraticCurveTo(
+          badgeX,
+          badgeY + badgeSize,
+          badgeX,
+          badgeY + badgeSize - radius
+        );
+
+
+        context.lineTo(
+          badgeX,
+          badgeY + radius
+        );
+
+
+        context.quadraticCurveTo(
+          badgeX,
+          badgeY,
+          badgeX + radius,
+          badgeY
+        );
+
+
+        context.closePath();
+
+
+        context.fill();
+
+
+        /*
+          Petite bordure très légère.
+        */
+
+        context.strokeStyle =
+          "#e5e9e6";
+
+
+        context.lineWidth =
+          2;
+
+
+        context.stroke();
+
+
+        /*
+          Icône.
+        */
+
+        const iconSize =
+          58;
+
+
+        context.drawImage(
+          iconImage,
+          (finalSize - iconSize) / 2,
+          (finalSize - iconSize) / 2,
+          iconSize,
+          iconSize
+        );
+
+      }
+
+
+      catch (error) {
+
+        /*
+          Si l'icône ne peut pas être chargée,
+          le QR reste téléchargeable.
+        */
+
+        console.warn(
+          "Icône non intégrée au PNG :",
+          error
+        );
+
+      }
+
+
+      /*
+        Création du fichier PNG.
+      */
+
+      const url =
+        output.toDataURL(
+          "image/png"
+        );
 
 
       const link =
